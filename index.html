@@ -108,19 +108,36 @@ label.done:has(input:checked) { background: var(--accent-soft); border-color: va
 
 footer { max-width: 72ch; margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 15px; }
 
-details.toc-mobile { display: none; }
+.btn.menu { display: none; font-size: 18px; }
+.where, .readbar, .toc-panel { display: none; }
+.where {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  color: var(--muted); font-size: 15px; padding-left: 12px; border-left: 1px solid var(--line);
+}
+.where:empty { border-left: 0; }
+.where b { color: var(--accent); font-weight: 700; margin-right: 6px; }
+.readbar { position: absolute; left: 0; bottom: -1px; height: 3px; width: 0; background: var(--accent); }
+.toc-panel {
+  position: absolute; top: 100%; left: 0; right: 0; max-height: calc(100vh - 70px); overflow: auto;
+  background: var(--surface); border-bottom: 1px solid var(--line); box-shadow: 0 12px 24px rgba(0,0,0,.12); padding: 8px;
+}
+.toc-panel ol { list-style: none; margin: 0 auto; padding: 0; max-width: 640px; }
+.toc-panel a { display: flex; gap: 10px; align-items: baseline; padding: 8px 10px; border-radius: 8px; color: var(--ink); text-decoration: none; font-size: 16px; line-height: 1.35; }
+.toc-panel a.active { background: var(--accent-soft); font-weight: 600; }
+.toc-panel a.is-done .toc-n { color: var(--accent); }
+.toc-panel a.is-done .toc-n::before { content: "\2713"; }
+.toc-panel a.is-done .toc-n span { display: none; }
 
 @media (max-width: 900px) {
   body { font-size: 17px; }
-  header.bar { padding: 10px 16px; }
+  header.bar { padding: 10px 16px; gap: 8px; }
   .layout { display: block; padding: 0 16px; }
   nav.toc { display: none; }
-  details.toc-mobile { display: block; margin: 20px 0 0; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
-  details.toc-mobile summary { padding: 12px 16px; font-weight: 700; cursor: pointer; }
-  details.toc-mobile ol { list-style: none; margin: 0; padding: 0 8px 10px; }
-  details.toc-mobile a { display: flex; gap: 10px; padding: 6px 8px; color: var(--ink); text-decoration: none; font-size: 16px; }
-  details.toc-mobile a.is-done .toc-n::before { content: "\2713"; color: var(--accent); }
-  details.toc-mobile a.is-done .toc-n span { display: none; }
+  .btn.menu { display: inline-flex; }
+  .brand { display: none; }
+  .readbar { display: block; }
+  .toc-panel:not([hidden]) { display: block; }
+  .where { display: block; padding-left: 4px; border-left: 0; color: var(--ink); font-weight: 600; }
   main { padding-top: 24px; }
   .progress { display: none; }
 }
@@ -130,10 +147,25 @@ details.toc-mobile { display: none; }
 <body>
 <div class="lang-root" data-lang="ro" lang="ro">
 <header class="bar">
+  <button class="btn menu" type="button" aria-expanded="false" aria-label="Cuprins">&#9776;</button>
   <a class="brand" href="#start">Cybersecurity de la zero</a>
+  <span class="where"></span>
   <span class="progress" data-tpl="{n} din 6 etape terminate"></span>
   <button class="btn theme" type="button" aria-label="Schimbă tema" title="Schimbă tema">&#9681;</button>
   <button class="btn lang-btn" type="button" data-to="en" lang="en" title="English">EN</button>
+  <span class="readbar"></span>
+  <nav class="toc-panel" aria-label="Cuprins" hidden>
+    <ol>
+<li><a href="#start"><span class="toc-n"></span><span class="toc-t">Cum folosești planul</span></a></li>
+<li><a href="#etapa-1" data-stage="1"><span class="toc-n">1</span><span class="toc-t">Linux și linia de comandă</span></a></li>
+<li><a href="#etapa-2" data-stage="2"><span class="toc-n">2</span><span class="toc-t">Rețelistică</span></a></li>
+<li><a href="#etapa-3" data-stage="3"><span class="toc-n">3</span><span class="toc-t">Python și conceptele de securitate</span></a></li>
+<li><a href="#etapa-4" data-stage="4"><span class="toc-n">4</span><span class="toc-t">Securitate web</span></a></li>
+<li><a href="#etapa-5" data-stage="5"><span class="toc-n">5</span><span class="toc-t">C, memorie și binary exploitation</span></a></li>
+<li><a href="#etapa-6" data-stage="6"><span class="toc-n">6</span><span class="toc-t">Alegerea direcției</span></a></li>
+<li><a href="#comunitati"><span class="toc-n"></span><span class="toc-t">Obiceiuri și comunități</span></a></li>
+    </ol>
+  </nav>
 </header>
 <div class="layout">
   <nav class="toc" aria-label="Cuprins">
@@ -154,19 +186,6 @@ details.toc-mobile { display: none; }
       <h1>Plan de învățare cybersecurity de la zero</h1>
       <p>Plan gratuit în 6 etape pentru a învăța cybersecurity de la zero, de la Linux și rețelistică până la securitate web și binary exploitation.</p>
     </div>
-    <details class="toc-mobile">
-      <summary>Cuprins</summary>
-      <ol>
-<li><a href="#start"><span class="toc-n"></span><span class="toc-t">Cum folosești planul</span></a></li>
-<li><a href="#etapa-1" data-stage="1"><span class="toc-n">1</span><span class="toc-t">Linux și linia de comandă</span></a></li>
-<li><a href="#etapa-2" data-stage="2"><span class="toc-n">2</span><span class="toc-t">Rețelistică</span></a></li>
-<li><a href="#etapa-3" data-stage="3"><span class="toc-n">3</span><span class="toc-t">Python și conceptele de securitate</span></a></li>
-<li><a href="#etapa-4" data-stage="4"><span class="toc-n">4</span><span class="toc-t">Securitate web</span></a></li>
-<li><a href="#etapa-5" data-stage="5"><span class="toc-n">5</span><span class="toc-t">C, memorie și binary exploitation</span></a></li>
-<li><a href="#etapa-6" data-stage="6"><span class="toc-n">6</span><span class="toc-t">Alegerea direcției</span></a></li>
-<li><a href="#comunitati"><span class="toc-n"></span><span class="toc-t">Obiceiuri și comunități</span></a></li>
-      </ol>
-    </details>
 <section aria-labelledby="start"><h2 id="start">Cum folosești planul</h2>
 <p>Planul are șase etape, de la bazele Linux până la alegerea unei direcții în securitate, și se parcurge în ritmul tău. Nu presupune nimic în plus față de ce știi din liceu (C, algoritmică, matematică).</p>
 <p>Despre C și C++: la liceu se predă oficial C++, dar în practică se folosește mai ales partea comună cu C (variabile, vectori, funcții, pointeri), plus cin și cout. Pentru ghidul ăsta e suficient: unde scrie C, e vorba exact de ce ai folosit deja. Diferențele sunt mici: în C citești și afișezi cu scanf și printf în loc de cin și cout, iar fișierele au extensia .c și se compilează cu gcc, nu cu g++.</p>
@@ -403,10 +422,25 @@ details.toc-mobile { display: none; }
 
 <div class="lang-root" data-lang="en" lang="en">
 <header class="bar">
+  <button class="btn menu" type="button" aria-expanded="false" aria-label="Contents">&#9776;</button>
   <a class="brand" href="#intro">Cybersecurity from scratch</a>
+  <span class="where"></span>
   <span class="progress" data-tpl="{n} of 6 stages done"></span>
   <button class="btn theme" type="button" aria-label="Toggle theme" title="Toggle theme">&#9681;</button>
   <button class="btn lang-btn" type="button" data-to="ro" lang="ro" title="Română">RO</button>
+  <span class="readbar"></span>
+  <nav class="toc-panel" aria-label="Contents" hidden>
+    <ol>
+<li><a href="#intro"><span class="toc-n"></span><span class="toc-t">How to use this guide</span></a></li>
+<li><a href="#stage-1" data-stage="1"><span class="toc-n">1</span><span class="toc-t">Linux and the command line</span></a></li>
+<li><a href="#stage-2" data-stage="2"><span class="toc-n">2</span><span class="toc-t">Networking</span></a></li>
+<li><a href="#stage-3" data-stage="3"><span class="toc-n">3</span><span class="toc-t">Python and security concepts</span></a></li>
+<li><a href="#stage-4" data-stage="4"><span class="toc-n">4</span><span class="toc-t">Web security</span></a></li>
+<li><a href="#stage-5" data-stage="5"><span class="toc-n">5</span><span class="toc-t">C, memory and binary exploitation</span></a></li>
+<li><a href="#stage-6" data-stage="6"><span class="toc-n">6</span><span class="toc-t">Choosing a direction</span></a></li>
+<li><a href="#communities"><span class="toc-n"></span><span class="toc-t">Habits and communities</span></a></li>
+    </ol>
+  </nav>
 </header>
 <div class="layout">
   <nav class="toc" aria-label="Contents">
@@ -427,19 +461,6 @@ details.toc-mobile { display: none; }
       <h1>Learning cybersecurity from scratch</h1>
       <p>A free 6-stage path to learn cybersecurity from scratch, from Linux and networking to web security and binary exploitation.</p>
     </div>
-    <details class="toc-mobile">
-      <summary>Contents</summary>
-      <ol>
-<li><a href="#intro"><span class="toc-n"></span><span class="toc-t">How to use this guide</span></a></li>
-<li><a href="#stage-1" data-stage="1"><span class="toc-n">1</span><span class="toc-t">Linux and the command line</span></a></li>
-<li><a href="#stage-2" data-stage="2"><span class="toc-n">2</span><span class="toc-t">Networking</span></a></li>
-<li><a href="#stage-3" data-stage="3"><span class="toc-n">3</span><span class="toc-t">Python and security concepts</span></a></li>
-<li><a href="#stage-4" data-stage="4"><span class="toc-n">4</span><span class="toc-t">Web security</span></a></li>
-<li><a href="#stage-5" data-stage="5"><span class="toc-n">5</span><span class="toc-t">C, memory and binary exploitation</span></a></li>
-<li><a href="#stage-6" data-stage="6"><span class="toc-n">6</span><span class="toc-t">Choosing a direction</span></a></li>
-<li><a href="#communities"><span class="toc-n"></span><span class="toc-t">Habits and communities</span></a></li>
-      </ol>
-    </details>
 <section aria-labelledby="intro"><h2 id="intro">How to use this guide</h2>
 <p>The guide has six stages, from Linux basics to choosing a direction in security, and you go through it at your own pace. It assumes nothing beyond what you already know from high school: C, algorithms and math.</p>
 <p>About C and C++: many high schools officially teach C++, but in practice students mostly use the part it shares with C (variables, arrays, functions, pointers), plus cin and cout. That is enough for this guide: wherever it says C, it means exactly what you have already used. The differences are small: in C you read and print with scanf and printf instead of cin and cout, files have the .c extension, and you compile with gcc instead of g++.</p>
@@ -744,16 +765,48 @@ details.toc-mobile { display: none; }
   });
   render();
 
-  document.querySelectorAll("details.toc-mobile a").forEach(function (a) {
-    a.addEventListener("click", function () { a.closest("details").open = false; });
+  function closeMenus() {
+    document.querySelectorAll(".toc-panel").forEach(function (p) { p.hidden = true; });
+    document.querySelectorAll(".btn.menu").forEach(function (b) { b.setAttribute("aria-expanded", "false"); });
+  }
+  document.querySelectorAll(".btn.menu").forEach(function (b) {
+    b.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var panel = b.parentNode.querySelector(".toc-panel"), open = panel.hidden;
+      closeMenus();
+      panel.hidden = !open;
+      b.setAttribute("aria-expanded", String(open));
+    });
   });
+  document.querySelectorAll(".toc-panel a").forEach(function (a) { a.addEventListener("click", closeMenus); });
+  document.addEventListener("click", function (e) { if (!e.target.closest(".toc-panel")) closeMenus(); });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMenus(); });
 
-  var links = document.querySelectorAll("nav.toc a");
+  var ticking = false;
+  function onScroll() {
+    ticking = false;
+    var h = document.documentElement.scrollHeight - innerHeight;
+    var pct = h > 0 ? Math.min(100, scrollY / h * 100) : 0;
+    document.querySelectorAll(".readbar").forEach(function (r) { r.style.width = pct + "%"; });
+  }
+  addEventListener("scroll", function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  onScroll();
+
+  var links = document.querySelectorAll("nav.toc a, .toc-panel a");
+  function setWhere(h) {
+    var w = h.closest(".lang-root").querySelector(".where");
+    var num = h.querySelector(".num");
+    var name = h.lastChild.textContent;
+    w.innerHTML = "";
+    if (num) { var b = document.createElement("b"); b.textContent = num.textContent; w.appendChild(b); }
+    w.appendChild(document.createTextNode(name));
+  }
   if ("IntersectionObserver" in window) {
     var obs = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting) return;
         current = e.target.id;
+        setWhere(e.target);
         links.forEach(function (a) { a.classList.toggle("active", a.getAttribute("href") === "#" + current); });
       });
     }, { rootMargin: "-80px 0px -70% 0px" });
